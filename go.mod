@@ -1,4 +1,4 @@
-module menhir
+module github.com/rpcarvs/sparke
 
 go 1.25.0
 

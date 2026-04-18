@@ -14,7 +14,7 @@ var assets embed.FS
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "menhir",
+	Use:   "sparke",
 	Short: "A simple CLI to scaffold Rust, Go and Python projects",
 	Long: `The CLI will set a minimal dir structure and copy a
 	corresponding justfile with common recipes for the selected
