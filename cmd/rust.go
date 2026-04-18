@@ -66,5 +66,5 @@ func init() {
 	rootCmd.AddCommand(rustCmd)
 	rustCmd.Flags().BoolVar(&rsLibFlag, "lib", false, "Create a lib crate")
 	// this does nothing. Adding just for completness
-	rustCmd.Flags().Bool("bin", false, "Create a binary crate")
+	rustCmd.Flags().Bool("bin", false, "Create a binary crate (default)")
 }

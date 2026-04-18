@@ -74,5 +74,5 @@ func init() {
 	pythonCmd.Flags().BoolVar(&pyLibFlag, "lib", false, "Create a lib")
 	pythonCmd.Flags().BoolVar(&pyPackageFlag, "package", false, "Create a package")
 	// this does nothing. Adding just for completness
-	pythonCmd.Flags().Bool("app", false, "Create an app")
+	pythonCmd.Flags().Bool("app", false, "Create an app (default)")
 }
