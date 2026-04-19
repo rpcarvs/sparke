@@ -9,70 +9,71 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	pyLibFlag     bool
-	pyPackageFlag bool
-)
+func newPythonCmd() *cobra.Command {
+	var (
+		libFlag     bool
+		packageFlag bool
+	)
 
-var pythonCmd = &cobra.Command{
-	Use:   "python [project_name]",
-	Short: "Scaffold a python project using uv",
-	Args:  cobra.ExactArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		projectName := args[0]
-		// default
-		style := "--app"
-		switch {
-		case pyLibFlag:
-			style = "--lib"
-		case pyPackageFlag:
-			style = "--package"
-		}
+	pythonCmd := &cobra.Command{
+		Use:   "python [project_name]",
+		Short: "Scaffold a python project using uv",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			projectName := args[0]
+			style := "--app"
+			switch {
+			case libFlag:
+				style = "--lib"
+			case packageFlag:
+				style = "--package"
+			}
 
-		fmt.Println("Preparing your python project...")
+			fmt.Println("Preparing your python project...")
 
-		execCmd := exec.Command(
-			"uv",
-			"init",
-			projectName,
-			style,
-		)
+			execCmd := exec.Command(
+				"uv",
+				"init",
+				projectName,
+				style,
+			)
 
-		execCmd.Stdout = os.Stdout
-		execCmd.Stderr = os.Stderr
+			execCmd.Stdout = os.Stdout
+			execCmd.Stderr = os.Stderr
 
-		// executing the cmd
-		if err := execCmd.Run(); err != nil {
-			return fmt.Errorf("failed to run uv init for %q: %w", projectName, err)
-		}
+			if err := execCmd.Run(); err != nil {
+				return fmt.Errorf("failed to run uv init for %q: %w", projectName, err)
+			}
 
-		if err := runFazInit(projectName); err != nil {
-			return err
-		}
+			if err := runFazInit(projectName); err != nil {
+				return err
+			}
 
-		if err := appendGitInfoExclude(projectName); err != nil {
-			return err
-		}
+			if err := appendGitInfoExclude(projectName); err != nil {
+				return err
+			}
 
-		// copying justfile
-		src := "assets/justfile_python"
-		out := filepath.Join(projectName, "justfile")
+			src := "assets/justfile_python"
+			out := filepath.Join(projectName, "justfile")
 
-		if err := copyEmbFile(assets, src, out); err != nil {
-			return err
-		}
+			if err := copyEmbFile(assets, src, out); err != nil {
+				return err
+			}
 
-		fmt.Println("\nDone!!")
+			fmt.Println("\nDone!!")
 
-		return nil
-	},
+			return nil
+		},
+	}
+
+	pythonCmd.Flags().BoolVar(&libFlag, "lib", false, "Create a lib")
+	pythonCmd.Flags().BoolVar(&packageFlag, "package", false, "Create a package")
+	pythonCmd.Flags().Bool("app", false, "Create an app (default)")
+
+	return pythonCmd
 }
 
-func init() {
-	rootCmd.AddCommand(pythonCmd)
-
-	pythonCmd.Flags().BoolVar(&pyLibFlag, "lib", false, "Create a lib")
-	pythonCmd.Flags().BoolVar(&pyPackageFlag, "package", false, "Create a package")
-	// this does nothing. Adding just for completness
-	pythonCmd.Flags().Bool("app", false, "Create an app (default)")
+// addPythonCommand wires the Python scaffolding command into the root tree.
+func addPythonCommand(rootCmd *cobra.Command) {
+	rootCmd.AddCommand(newPythonCmd())
 }

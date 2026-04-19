@@ -4,7 +4,6 @@ package cmd
 import (
 	"embed"
 	"fmt"
-	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -12,27 +11,28 @@ import (
 //go:embed assets/*
 var assets embed.FS
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "sparke",
-	Short: "A simple CLI to scaffold Rust, Go and Python projects",
-	Long: `The CLI will set a minimal dir structure and copy a
+// NewRootCmd builds the sparke CLI command tree.
+func NewRootCmd() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "sparke",
+		Short: "A simple CLI to scaffold Rust, Go and Python projects",
+		Long: `The CLI will set a minimal dir structure and copy a
 	corresponding justfile with common recipes for the selected
 	language.`,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		// prints the help message by default
-		err := cmd.Help()
-		if err != nil {
-			return fmt.Errorf("something went wrong %w", err)
-		}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// prints the help message by default
+			err := cmd.Help()
+			if err != nil {
+				return fmt.Errorf("something went wrong %w", err)
+			}
 
-		return nil
-	},
-}
-
-func Execute() {
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
+			return nil
+		},
 	}
+
+	addGoCommand(rootCmd)
+	addRustCommand(rootCmd)
+	addPythonCommand(rootCmd)
+
+	return rootCmd
 }

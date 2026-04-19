@@ -32,6 +32,13 @@ source ~/.bashrc
 
 Run it with one of the language subcommands.
 
+Useful built-in CLI helpers:
+
+```bash
+sparke --version
+sparke completion zsh
+```
+
 ### Go project
 
 To scaffold a Go project with a minimalist dir structure:
