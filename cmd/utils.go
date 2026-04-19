@@ -44,7 +44,7 @@ func appendGitInfoExclude(projectName string) error {
 		return fmt.Errorf("failed to open git exclude file %w", err)
 	}
 
-	ignoreEntries := "\n.claude/\n*CLAUDE.md\n*AGENTS.md\n*PLAN.md\n"
+	ignoreEntries := "\n.codex/\n.claude/\n*CLAUDE.md\n*AGENTS.md\n*PLAN.md\n"
 	if _, err := exclude.WriteString(ignoreEntries); err != nil {
 		_ = exclude.Close()
 		return fmt.Errorf("failed to write git exclude file %w", err)
