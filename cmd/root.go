@@ -17,9 +17,13 @@ func NewRootCmd() *cobra.Command {
 		Use:   "sparke",
 		Short: "A simple CLI to scaffold Rust, Go and Python projects",
 		Long: `The CLI will set a minimal dir structure and copy a
-	corresponding justfile with common recipes for the selected
-	language.`,
+		corresponding justfile with common recipes for the selected
+		language.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if isInteractiveTerminal() {
+				return runInteractiveScaffold()
+			}
+
 			// prints the help message by default
 			err := cmd.Help()
 			if err != nil {

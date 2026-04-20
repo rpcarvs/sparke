@@ -11,6 +11,8 @@ It scaffolds simple project structures for:
 
 This tool runs external commands, so you need these installed:
 - Go (to build and run `sparke`)
+- `git` (to initialize generated repositories)
+- `faz` (to initialize task tracking in generated projects)
 - [Cargo](https://github.com/rust-lang/cargo) (for Rust project creation)
 - [uv](https://github.com/astral-sh/uv) (for Python project creation)
 - [just](https://github.com/casey/just) (optional, to use the generated `justfile` recipes)
@@ -30,7 +32,19 @@ source ~/.bashrc
 
 ## Usage
 
-Run it with one of the language subcommands.
+Run `sparke` with no subcommand to enter the interactive flow.
+
+```bash
+sparke
+```
+
+The interactive flow will:
+- let you choose Go, Rust, or Python
+- ask for Rust and Python project types when applicable
+- ask for the target directory, where an empty value means the current directory
+- ask separately for the Go module name when Go is selected
+
+You can still use the explicit CLI commands when you want a non-interactive flow.
 
 Useful built-in CLI helpers:
 
